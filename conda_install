@@ -1,0 +1,3 @@
+conda create -n your-name
+conda install pip
+pip install numpy pandas matplotlib streamlit
