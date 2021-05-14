@@ -83,6 +83,5 @@ f = open("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']), "r")
 print(f.read())
 f.close()
 
-
-# Visualization of total path
+# Calls visualization of total path
 visualizer.initialization_visualizer_total(paths)
