@@ -7,7 +7,6 @@ import initialization  # File that specifies the variables with the user
 import visualizer  # Functions that visualize shapes and give mass & volume of print
 import streamlit as st
 
-
 # Necessary variables to pass to functions (rectangle), x0-z0 only non-zero for relative values
 var = {'x_length': 40, 'y_length': 40, 'line_spacing': 0.1, 'line_thickness': 0.1, 'lines': 100, 'x0': 0, 'y0': 0,
        'z0': 0, 'offset': 5, 'speed': [120, 360, 600, 840], 'speed_multiplier': [1, 1, 1, 1], 'bed_T': 69,
@@ -24,10 +23,8 @@ while ans != "y":
     ans = ""  # resets answer
     #  Initializes G-Code writer by checking a set of variables with user
     var = initialization.variables_rectangle_first(var)  # in the future implement choice for shape
-
     # Shape generator
     path_shape = shaper.rectangle_first(var)  # Calculates coordinates for shape
-
     #  Visualization of the to be printed structure to check if shape needs to be changed & calculation mass & volume
     if var['dz_line'] == 0:  # for 2D plots, so with dz_line = 0
         var, coordinates = visualizer.initialization_visualizer_2d(var, path_shape)
