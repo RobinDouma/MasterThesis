@@ -12,8 +12,14 @@ import streamlit as st
 class Shape:
     """Creates an instance of a made shape"""
 
-    def __init__(self, id_number):
+    def __init__(self, id_number, type):
         self.id = id_number
+        self.type = type
+        if self.type == "Rectangle":
+            self.var = {'x_length': 40, 'y_length': 40, 'line_spacing': 0.1, 'line_thickness': 0.1, 'lines': 100,
+                        'x0': 0, 'y0': 0, 'z0': 0, 'offset': 5, 'speed': [120, 360, 600, 840],
+                        'speed_multiplier': [1, 1, 1, 1], 'bed_T': 69, 'nozzle_T': 79, 'nozzle_W': 0.335,
+                        'dz_line': 0.01, 'file_name': 'test.gcode', 'dir_name': os.getcwdb().decode()}
 
 
 # Necessary variables to pass to functions (rectangle), x0-z0 only non-zero for relative values
@@ -35,11 +41,11 @@ column = st.beta_columns(shapes_number)
 shapes = [0] * shapes_number
 shape_choice = [0] * shapes_number
 shape_choice = [0] * shapes_number
-shape_types = ["Rectangle", "Circle"]
+shape_types = ["Rectangle", "Other"]
 
 for i in np.arange(0, shapes_number):
-    shapes[i] = Shape(i)
     shape_choice[i] = column[i].radio("Select shape type %i: " % (i+1), shape_types)
+    shapes[i] = Shape(i, shape_choice[i])
     if shape_choice[i] == "Rectangle":
         column[i].success("Rectangle")
     else:
