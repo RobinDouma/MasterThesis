@@ -60,7 +60,7 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
         else:
             shapes[i].var[v] = column[i].number_input("Shape %i: %s: " % ((i+1), v), shapes[i].var[v])
     shapes[i].var["file_name"] = file_name
-    shapes[i].var['dir_name']: os.getcwdb().decode()
+    shapes[i].var['dir_name'] = os.getcwdb().decode()
 
 # Generate path
 for i, shape in enumerate(shapes):
@@ -80,10 +80,34 @@ for shape in shapes:
         z += shape.var['line_thickness']
         shape.path3d = np.column_stack((shape.path2d, z))
 
+fig = go.Figure()
 for number, shape in enumerate(shapes):
     x = shape.path3d[:, 0]
     y = shape.path3d[:, 1]
     z = shape.path3d[:, 2]
     name = ("Shape " + str(number))
-    fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
-    st.plotly_chart(fig)
+    fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
+fig.update_layout(scene=dict(
+    xaxis_title='x [mm]',
+    yaxis_title='y [mm]',
+    zaxis_title='z [mm]'),
+    width=700,
+    margin=dict(r=20, b=10, l=10, t=10))
+fig.update_layout(
+    title={
+        'text': "Your to-be printed shapes!",
+        'y':1,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'})
+st.plotly_chart(fig)
+
+if os.path.exists("{0}\\G-Code\\{1}".format(shapes[0].var['dir_name'], shapes[0].var['file_name'])):  # Deletes G-code file if preexisting
+    os.remove("{0}\\G-Code\\{1}".format(shapes[0].var['dir_name'], shapes[0].var['file_name']))
+
+if st.button("Generate G-Code"):
+    st.write("G-Code generated and put in G-Code folder in Python_3D_printer folder, good printing!")
+    writer.gcode_writer(shapes[0].path2d, shapes[0].var)
+    if shapes_number > 1:
+        for shape_num in arange(1, shapes_number):
+            writer.gcode_writer_more(shapes[shape_num].path2d, shapes[shape_num].var)
