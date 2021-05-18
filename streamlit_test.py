@@ -6,6 +6,10 @@ import writer  # File that writes the G-code
 import initialization  # File that specifies the variables with the user
 import visualizer  # Functions that visualize shapes and give mass & volume of print
 import streamlit as st
+import plotly.graph_objects as go
+from plotly import tools
+import plotly.offline as py
+import plotly.express as px
 # To run this - write: streamlit run streamlit_test.py in terminal
 
 
@@ -14,6 +18,8 @@ class Shape:
     def __init__(self, id_number, shape_type):
         self.id = id_number
         self.type = shape_type
+        self.path2d = []
+        self.path3d = []
         if self.type == "Rectangle":  # Generates a dictionary of variables for rectangle type shapes
             self.var = {'x_length': 40, 'y_length': 40, 'line_spacing': 0.1, 'line_thickness': 0.1, 'lines': 100,
                         'x0': 0, 'y0': 0, 'z0': 0, 'offset': 5, 'speed': [120, 360, 600, 840],
@@ -56,3 +62,28 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
     shapes[i].var["file_name"] = file_name
     shapes[i].var['dir_name']: os.getcwdb().decode()
 
+# Generate path
+for i, shape in enumerate(shapes):
+    if i != 0:
+        shape.path2d = shaper.rectangle_more(shape.var)
+    else:
+        shape.path2d = shaper.rectangle_first(shape.var)
+
+for shape in shapes:
+    if shape.var['dz_line'] == 0:
+        shape.path3d = np.column_stack((shape.path2d, np.full(len(shape.path2d), shape.var['line_thickness'])))
+    else:
+        z = np.zeros(len(shape.path2d))
+        for i in range(5, len(z) - 2):
+            z[i + 1] = z[i - 3] + shape.var['dz_line']
+        z[-1] = z[-2]
+        z += shape.var['line_thickness']
+        shape.path3d = np.column_stack((shape.path2d, z))
+
+for number, shape in enumerate(shapes):
+    x = shape.path3d[:, 0]
+    y = shape.path3d[:, 1]
+    z = shape.path3d[:, 2]
+    name = ("Shape " + str(number))
+    fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
+    st.plotly_chart(fig)
