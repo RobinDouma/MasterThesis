@@ -76,7 +76,7 @@ def gcode_writer_more(path, var):
             "M190 S%g ; bed : define temperature\n"
             "M109 T12 S%g ; slot 1 : define temperature\n\n"
             "M221 P2000 S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-            "nozzle[mm]\n\n" % (var['z0'], var['x0'], var['y0'], var['bed_T'], var['nozzle_T'],
+            "nozzle[mm]\n\n" % (var['bed_T'], var['nozzle_T'],
                                 var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
             "G0 X0 Y0 ; goes to defined start x & y\n"
