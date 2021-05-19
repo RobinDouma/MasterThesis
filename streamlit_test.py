@@ -1,7 +1,7 @@
 import os  # Deletes written file to avoid error & retrieves directory info
 from matplotlib import pyplot as plt
 import numpy as np
-import shaper  # File that makes shape coordinates
+import shaper_st  # File that makes shape coordinates
 import writer  # File that writes the G-code
 import initialization  # File that specifies the variables with the user
 import visualizer  # Functions that visualize shapes and give mass & volume of print
@@ -64,10 +64,7 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
 
 # Generate path
 for i, shape in enumerate(shapes):
-    if i != 0:
-        shape.path2d = shaper_st.rectangle_more(shape.var)
-    else:
-        shape.path2d = shaper_st.rectangle_first(shape.var)
+    shape.path2d = shaper_st.rectangle(shape.var)
 
 for shape in shapes:
     if shape.var['dz_line'] == 0:
