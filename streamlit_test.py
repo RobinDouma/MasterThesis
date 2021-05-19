@@ -43,6 +43,8 @@ shapes = [0] * shapes_number
 shape_choice = [0] * shapes_number
 shape_types = ["Rectangle", "Other"]
 
+# Need to put x-z0 in first question instead of per shape for ease of use
+
 for i in np.arange(0, shapes_number):  # Iterates over all shapes
     shape_choice[i] = column[i].radio("Select shape type %i: " % (i+1), shape_types)
     shapes[i] = Shape(i, shape_choice[i])
