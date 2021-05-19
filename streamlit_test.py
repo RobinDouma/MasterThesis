@@ -65,9 +65,9 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
 # Generate path
 for i, shape in enumerate(shapes):
     if i != 0:
-        shape.path2d = shaper.rectangle_more(shape.var)
+        shape.path2d = shaper_st.rectangle_more(shape.var)
     else:
-        shape.path2d = shaper.rectangle_first(shape.var)
+        shape.path2d = shaper_st.rectangle_first(shape.var)
 
 for shape in shapes:
     if shape.var['dz_line'] == 0:

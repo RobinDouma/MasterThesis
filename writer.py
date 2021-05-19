@@ -73,10 +73,6 @@ def gcode_writer_more(path, var):
     # Writes the G-code
     f.writelines([line for line in text[:-2]])
     f.write("; INITIALIZATION : PRINTING\n"
-            "M660 H2 Z%g ; slot 1 : define start Z\n"
-            ";M660 H3 Z119.999 ; slot 2 : define start z\n\n"
-            "M6 T12 O2 X%g Y%g ; slot 1 : define start x & y\n"
-            ";M6 T13 O3 X45 Y84 ; slot 2 : define start x & y\n\n"
             "M190 S%g ; bed : define temperature\n"
             "M109 T12 S%g ; slot 1 : define temperature\n\n"
             "M221 P2000 S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
