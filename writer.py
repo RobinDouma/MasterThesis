@@ -45,7 +45,7 @@ def gcode_writer(path, var):
             line_thickness += var['dz_line']
             f.write("G1 Z%g E1 F%g\n"
                     "M221 P2000 S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-                    "nozzle[mm]\n\n" % (line_thickness, var['speed'], line_thickness, var['nozzle_W']))
+                    "nozzle[mm]\n\n" % (line_thickness, var['speed'][s], line_thickness, var['nozzle_W']))
         if (var['speed_multiplier'] != 0) & (i % 4 == 0) & (i != 0):  # if after each contour speed is to be multiplied
             for side in range(0, len(var['speed'])):
                 var['speed'][side] *= var['speed_multiplier'][side]

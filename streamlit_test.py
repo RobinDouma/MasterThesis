@@ -54,11 +54,11 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
         if isinstance(shapes[i].var[v], list):
             for side_name, side_value in enumerate(shapes[i].var[v]):
                 shapes[i].var[v][side_name] = column[i].number_input("Shape %i: %s side %i: " % ((i+1), v, side_name),
-                                                                     shapes[i].var[v][side_name])
+                                                                     value=shapes[i].var[v][side_name])
         elif isinstance(shapes[i].var[v], str):
             shapes[i].var[v] = column[i].text_input("Shape %i: %s: " % ((i+1), v), shapes[i].var[v])
         else:
-            shapes[i].var[v] = column[i].number_input("Shape %i: %s: " % ((i+1), v), shapes[i].var[v])
+            shapes[i].var[v] = column[i].number_input("Shape %i: %s: " % ((i+1), v), value=shapes[i].var[v])
     shapes[i].var["file_name"] = file_name
     shapes[i].var['dir_name'] = os.getcwdb().decode()
 
@@ -86,6 +86,7 @@ for number, shape in enumerate(shapes):
     y = shape.path3d[:, 1]
     z = shape.path3d[:, 2]
     name = ("Shape " + str(number))
+    fig.add_trace(go.Scatter3d(x=x, y=y, z=z, opacity=0.5, name=("Shape " + str(number+1))))
     fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
 fig.update_layout(scene=dict(
     xaxis_title='x [mm]',
@@ -109,5 +110,5 @@ if st.button("Generate G-Code"):
     st.write("G-Code generated and put in G-Code folder in Python_3D_printer folder, good printing!")
     writer.gcode_writer(shapes[0].path2d, shapes[0].var)
     if shapes_number > 1:
-        for shape_num in arange(1, shapes_number):
+        for shape_num in range(1, shapes_number):
             writer.gcode_writer_more(shapes[shape_num].path2d, shapes[shape_num].var)
