@@ -43,8 +43,6 @@ shapes = [0] * shapes_number
 shape_choice = [0] * shapes_number
 shape_types = ["Rectangle", "Other"]
 
-# Need to put x-z0 in first question instead of per shape for ease of use
-
 for i in np.arange(0, shapes_number):  # Iterates over all shapes
     shape_choice[i] = column[i].radio("Select shape type %i: " % (i+1), shape_types)
     shapes[i] = Shape(i, shape_choice[i])
@@ -60,7 +58,12 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
         elif isinstance(shapes[i].var[v], str):
             shapes[i].var[v] = column[i].text_input("Shape %i: %s: " % ((i+1), v), shapes[i].var[v])
         else:
-            shapes[i].var[v] = column[i].number_input("Shape %i: %s: " % ((i+1), v), value=shapes[i].var[v])
+            if (v != "x0") & (v != "y0") & (v != "z0"):
+                shapes[i].var[v] = column[i].number_input("Shape %i: %s: " % ((i+1), v), value=shapes[i].var[v])
+            elif i == 0:
+                shapes[i].var[v] = column[i].number_input("Shape %i: %s (HOME)" % ((i + 1), v), value=shapes[i].var[v])
+            else:
+                shapes[i].var[v] = column[i].number_input("Shape %i: changge in %s from HOME" % ((i + 1), v), value=shapes[i].var[v])
     shapes[i].var["file_name"] = file_name
     shapes[i].var['dir_name'] = os.getcwdb().decode()
 
@@ -89,7 +92,8 @@ for number, shape in enumerate(shapes):
     z = shape.path3d[:, 2]
     name = ("Shape " + str(number))
     fig.add_trace(go.Scatter3d(x=x, y=y, z=z, opacity=0.5, name=("Shape " + str(number+1))))
-    fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
+fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[0], opacity=0.5, name="Home"))
+    #fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
 fig.update_layout(scene=dict(
     xaxis_title='x [mm]',
     yaxis_title='y [mm]',
