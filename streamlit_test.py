@@ -92,8 +92,8 @@ for number, shape in enumerate(shapes):
     z = shape.path3d[:, 2]
     name = ("Shape " + str(number))
     fig.add_trace(go.Scatter3d(x=x, y=y, z=z, opacity=0.5, name=("Shape " + str(number+1))))
+    #  fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
 fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[0], opacity=0.5, name="Home"))
-    #fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
 fig.update_layout(scene=dict(
     xaxis_title='x [mm]',
     yaxis_title='y [mm]',
