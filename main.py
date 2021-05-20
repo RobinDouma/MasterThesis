@@ -37,7 +37,7 @@ while ans != "y":
 # G-code generator
 if os.path.exists("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name'])):  # Deletes G-code file if preexisting
     os.remove("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']))
-writer.gcode_writer(path_shape, var)
+writer.gcode_writer(path_shape, var, 1)
 
 # Total path coordinates generator
 path_name = ("Path_" + str(path_number))
@@ -71,7 +71,7 @@ while (more != 'y') & (more != 'n'):
         paths[path_name] = coordinates
     elif more == 'n':
         break
-    writer.gcode_writer_more(path_shape, var)
+    writer.gcode_writer_more(path_shape, var, (path_number + 1))
     #  Visualization of the G-Code
     f = open("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']), "r")
     print(f.read())

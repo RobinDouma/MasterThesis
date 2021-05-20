@@ -21,10 +21,10 @@ class Shape:
         self.path2d = []
         self.path3d = []
         if self.type == "Rectangle":  # Generates a dictionary of variables for rectangle type shapes
-            self.var = {'x_length': 40, 'y_length': 40, 'line_spacing': 0.1, 'line_thickness': 0.1, 'lines': 100,
+            self.var = {'x_length': 20, 'y_length': 10, 'line_spacing': 0.2, 'line_thickness': 0.1, 'lines': 10,
                         'x0': 0, 'y0': 0, 'z0': 0, 'offset': 5, 'speed': [120, 360, 600, 840],
-                        'speed_multiplier': [1, 1, 1, 1], 'bed_T': 69, 'nozzle_T': 79, 'nozzle_W': 0.335,
-                        'dz_line': 0.01}
+                        'speed_multiplier': [1, 1, 1, 1], 'bed_T': 63, 'nozzle_T': 79, 'nozzle_W': 0.335,
+                        'dz_line': 0, 'shape_time_delay': 0}
         else:  # Variables to be thought of for other shape type
             self.var = {}
 
@@ -85,14 +85,15 @@ for shape in shapes:
         z += shape.var['line_thickness']
         shape.path3d = np.column_stack((shape.path2d, z))
 
+# Generates the shapes to be printed for the user to see if they are as intended
 fig = go.Figure()
 for number, shape in enumerate(shapes):
     x = shape.path3d[:, 0]
     y = shape.path3d[:, 1]
     z = shape.path3d[:, 2]
     name = ("Shape " + str(number))
-    fig.add_trace(go.Scatter3d(x=x, y=y, z=z, opacity=0.5, name=("Shape " + str(number+1))))
-    #  fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
+    fig.add_trace(go.Scatter3d(x=x, y=y, z=z, opacity=1, name=("Shape " + str(number+1))))
+    fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
 fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[0], opacity=0.5, name="Home"))
 fig.update_layout(scene=dict(
     xaxis_title='x [mm]',
@@ -109,12 +110,15 @@ fig.update_layout(
         'yanchor': 'top'})
 st.plotly_chart(fig)
 
+# Makes sure if the file name already exists that it is deleted
 if os.path.exists("{0}\\G-Code\\{1}".format(shapes[0].var['dir_name'], shapes[0].var['file_name'])):  # Deletes G-code file if preexisting
     os.remove("{0}\\G-Code\\{1}".format(shapes[0].var['dir_name'], shapes[0].var['file_name']))
 
+# Gives user the choice to generate a G-Code if the shapes are satisfactory
 if st.button("Generate G-Code"):
-    st.write("G-Code generated and put in G-Code folder in Python_3D_printer folder, good printing!")
-    writer.gcode_writer(shapes[0].path2d, shapes[0].var)
+    st.write("G-Code generated named: %s.\n\nStored in ""%s""\\G-Code."
+             "\n\nGood printing!" % (shapes[0].var['file_name'], shapes[0].var['dir_name']))
+    writer.gcode_writer(shapes[0].path2d, shapes[0].var, 1)
     if shapes_number > 1:
         for shape_num in range(1, shapes_number):
-            writer.gcode_writer_more(shapes[shape_num].path2d, shapes[shape_num].var)
+            writer.gcode_writer_more(shapes[shape_num].path2d, shapes[shape_num].var, (shape_num + 1))

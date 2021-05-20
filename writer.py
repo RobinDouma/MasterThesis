@@ -1,15 +1,16 @@
 import os  # Deletes written file to avoid error & retrieves directory info
 
 
-def gcode_writer(path, var):
+def gcode_writer(path, var, shape_num):
     """Writes the g-code to be used by printer with some default lines"""
     f = open("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']), "x")
-    f.write("; INITIALIZATION : GENERAL\n"
+    f.write("; SHAPE %i STARTS HERE\n\n"
+            "; INITIALIZATION : GENERAL\n"
             "G28 Z0 ; home Z\n"
             "G28 X0 Y0 ; home X/Y\n\n"
             "G21 ; set units : mm\n"
             "G90 ; coordinates printing : absolute\n"
-            "M82 ; coordinates extrusion : absolute\n\n")  # initialization general
+            "M82 ; coordinates extrusion : absolute\n\n" % shape_num)  # initialization general
     f.write("; INITIALIZATION : PRINTING\n"
             "M660 H2 Z%g ; slot 1 : define start Z\n"
             ";M660 H3 Z119.999 ; slot 2 : define start z\n\n"
@@ -62,7 +63,7 @@ def gcode_writer(path, var):
     return
 
 
-def gcode_writer_more(path, var):
+def gcode_writer_more(path, var, shape_num):
     """Writes the g-code to be used by printer with some default lines"""
     # Removes end of program of previous shapes
     edit = open("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']))
@@ -72,11 +73,13 @@ def gcode_writer_more(path, var):
     f = open("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']), 'x')
     # Writes the G-code
     f.writelines([line for line in text[:-2]])
-    f.write("; INITIALIZATION : PRINTING\n"
+    f.write(";SHAPE %i STARTS HERE\n\n"
+            "; INITIALIZATION : PRINTING\n"
+            "G4 P%g ; wait P[ms] between shapes\n"
             "M190 S%g ; bed : define temperature\n"
             "M109 T12 S%g ; slot 1 : define temperature\n\n"
             "M221 P2000 S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-            "nozzle[mm]\n\n" % (var['bed_T'], var['nozzle_T'],
+            "nozzle[mm]\n\n" % (shape_num, (var['shape_time_delay'] * 60000), var['bed_T'], var['nozzle_T'],
                                 var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
             "G0 X%g Y%g ; goes to defined start x & y\n"
