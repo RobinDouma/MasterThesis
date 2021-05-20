@@ -12,7 +12,7 @@ import plotly.offline as py
 import plotly.express as px
 # To run this - write: streamlit run streamlit_test.py in terminal
 
-
+# Make new variable: time between prints and add it as command in machine (G0 with speed or wait command)
 class Shape:
     """Creates an instance of a made shape"""
     def __init__(self, id_number, shape_type):
