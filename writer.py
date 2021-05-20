@@ -79,7 +79,7 @@ def gcode_writer_more(path, var):
             "nozzle[mm]\n\n" % (var['bed_T'], var['nozzle_T'],
                                 var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
-            "G0 X0 Y0 ; goes to defined start x & y\n"
+            "G0 X%g Y%g ; goes to defined start x & y\n"
             "G0 Z0 H2 ; goes to defined start z\n\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
@@ -88,7 +88,7 @@ def gcode_writer_more(path, var):
             "; PRINTING : EXTRUSION\n"
             "G1 Z%g E1 F%g\n"
             "G1 X%g Y%g E1 F%g\n"
-            "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'][0], path[0][0], path[0][1], var['speed'][0],
+            "G1 X%g Y%g E1 F%g\n" % (var['x0'], var['y0'], var['line_thickness'], var['speed'][0], path[0][0], path[0][1], var['speed'][0],
                                      path[1][0], path[1][1], var['speed'][0])
             )  # printing start-up
     line_thickness = var['line_thickness']
