@@ -75,15 +75,15 @@ def gcode_writer_more(path, var, shape_num):
     f.writelines([line for line in text[:-2]])
     f.write(";SHAPE %i STARTS HERE\n\n"
             "; INITIALIZATION : PRINTING\n"
-            "G4 P%g ; wait P[ms] between shapes\n"
             "M190 S%g ; bed : define temperature\n"
             "M109 T12 S%g ; slot 1 : define temperature\n\n"
             "M221 P2000 S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-            "nozzle[mm]\n\n" % (shape_num, (var['shape_time_delay'] * 60000), var['bed_T'], var['nozzle_T'],
+            "nozzle[mm]\n\n" % (shape_num, var['bed_T'], var['nozzle_T'],
                                 var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
             "G0 X%g Y%g ; goes to defined start x & y\n"
             "G0 Z0 H2 ; goes to defined start z\n\n"
+            "G4 P%f ; wait P[ms] between shapes\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
             "G92 E0 ; replace extruder position : E[mm]\n\n"
@@ -91,7 +91,8 @@ def gcode_writer_more(path, var, shape_num):
             "; PRINTING : EXTRUSION\n"
             "G1 Z%g E1 F%g\n"
             "G1 X%g Y%g E1 F%g\n"
-            "G1 X%g Y%g E1 F%g\n" % (var['x0'], var['y0'], var['line_thickness'], var['speed'][0], path[0][0], path[0][1], var['speed'][0],
+            "G1 X%g Y%g E1 F%g\n" % (var['x0'], var['y0'], float((var['shape_time_delay'] * 60000)),
+                                     var['line_thickness'], var['speed'][0], path[0][0], path[0][1], var['speed'][0],
                                      path[1][0], path[1][1], var['speed'][0])
             )  # printing start-up
     line_thickness = var['line_thickness']
