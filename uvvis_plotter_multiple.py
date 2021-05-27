@@ -20,9 +20,9 @@ file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\
            '210421 CLCEA2.1\\210526 210520 CLCEA2.1 lines - Reflection at RT\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
-spectra = [] * len(file_names)
+spectra = [0] * len(file_names)
 
-for i, file_name in enumerate(file_names):
+for file_i, file_name in enumerate(file_names):
     x, y = [], []
     name = file_name[161:-15]
     # Extracts the values from the .csv file
@@ -46,14 +46,15 @@ for i, file_name in enumerate(file_names):
     y_max = y[y_max_index]
     print("The spectrum of:\n%s%s.dat\n, has the following properties [μm]:\nMax reflectance: %f %% at %f nm"
           % (file_dir, file_name, y_max, x_max))
-    spectra[i] = Spectrum(name, x, y, y_max_index, x_max, y_max)
+    spectra[file_i] = Spectrum(name, x, y, y_max_index, x_max, y_max)
 
 # Plots the profile
-plt.plot(x, y)
-plt.xlabel("Wavelength [nm]")
-plt.ylabel("Reflectance [%]")
-plt.title("Reflectance of %s" % file_name)
-plt.text(x[y_max_index], y[y_max_index], " at " + str(int(x_max)) + " nm")
-plt.text(x[y_max_index + 20], y[y_max_index], str(int(y_max)) + " %")
+for spectrum in spectra:
+    plt.plot(spectrum.x, spectrum.y)
+    plt.xlabel("Wavelength [nm]")
+    plt.ylabel("Reflectance [%]")
+    plt.title("Reflectance of %s" % spectrum.id)
+    plt.text(spectrum.x_max, spectrum.y_max, " at " + str(int(spectrum.x_max)) + " nm")
+    plt.text(spectrum.x_max + 20, spectrum.y_max, str(int(spectrum.y_max)) + " %")
 plt.show()
 # plt.savefig(file_dir + file_name + ".png")
