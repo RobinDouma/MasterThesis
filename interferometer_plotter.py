@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 import csv
 import numpy as np
 
+# Change the file name and directory here for calculation
 file_name = '210527 210520 g2 l3 mid'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data' \
       '\\8. Inferometer\\210421 CLCEA2.1\\210527 210520-18 CLCEA2.1\\'
