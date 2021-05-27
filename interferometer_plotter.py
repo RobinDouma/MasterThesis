@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import csv
 import numpy as np
+from glob import glob as gb
 
 # Change the file name and directory here for calculation
 file_name = '210527 210520 g2 l3 mid'
