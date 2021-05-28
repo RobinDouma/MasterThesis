@@ -1,15 +1,11 @@
 import os  # Deletes written file to avoid error & retrieves directory info
-from matplotlib import pyplot as plt
 import numpy as np
 import shaper  # File that makes shape coordinates
 import writer  # File that writes the G-code
-import initialization  # File that specifies the variables with the user
-import visualizer  # Functions that visualize shapes and give mass & volume of print
 import streamlit as st
 import plotly.graph_objects as go
-from plotly import tools
-import plotly.offline as py
-import plotly.express as px
+
+
 # To run this - write: streamlit run streamlit_test.py in terminal
 
 # Make new variable: time between prints and add it as command in machine (G0 with speed or wait command)
