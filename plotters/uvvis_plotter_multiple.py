@@ -19,14 +19,14 @@ class Spectrum:
 # Change the file name and directory here for calculation
 file_extension = 'csv'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis PE\\' \
-           '210421 CLCEA2.1\\210526 210518&20 CLCEA2.1 lines - Reflection at RT\\40m\\'
+           '210421 CLCEA2.1\\210526 210518 CLCEA2.1 lines - Polarization 410 nm Reflection at RT\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
 spectra = [0] * len(file_names)
 # Writes incomprehensible data into usable classes
 for file_i, file_name in enumerate(file_names):
     x, y = [], []
-    name = file_name[181:-15]
+    name = file_name[188:-15]
     # Extracts the values from the .csv file
     with open(file_name) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
@@ -38,9 +38,9 @@ for file_i, file_name in enumerate(file_names):
                 continue
 
     # Finetune data
-    cutoff_index = x.index(cutoff)
-    x = x[cutoff_index::]
-    y = y[cutoff_index::]
+    #cutoff_index = x.index(cutoff)
+    #x = x[cutoff_index::]
+    #y = y[cutoff_index::]
 
     # Calculates some interesting values and prints them
     y_max_index = y.index(max(y))
@@ -53,9 +53,9 @@ viridis = cm.get_cmap('viridis', len(spectra))
 for spectrum_i, spectrum in enumerate(spectra):
     color = spectrum_i / len(spectra)
     plt.plot(spectrum.x, spectrum.y, label=spectrum.id, color=viridis(color))
-    plt.xlabel("Wavelength [nm]")
+    plt.xlabel("Angle")
     plt.ylabel("Reflectance [%]")
-    plt.title("Reflectance")
+    plt.title("Reflectance vs polarization angle")
     plt.legend()
 if os.path.exists(file_dir + "plot" + ".png"):  # Deletes file if preexisting
     os.remove(file_dir + "plot" + ".png")
@@ -70,7 +70,7 @@ worksheet_gen = workbook.add_worksheet('General')
 worksheet_max.write(0, 0, 'ID')
 worksheet_max.write(0, 1, 'Peak [nm]')
 worksheet_max.write(0, 2, 'Reflectance [%R]')
-worksheet_gen.write(0, 0, 'Wavelength [nm')
+worksheet_gen.write(0, 0, 'Wavelength [nm]')
 for line, spec in enumerate(spectra):
     worksheet_max.write(line + 1, 0, spec.id)
     worksheet_max.write(line + 1, 1, spec.x_max)
