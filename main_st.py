@@ -21,7 +21,11 @@ class Shape:
                         'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'offset': 5.0, 'speed': [120, 360, 600, 840],
                         'speed_multiplier': [1, 1, 1, 1], 'bed_T': 68.0, 'nozzle_T': 79.0, 'nozzle_W': 0.233,
                         'dz_line': 0.0, 'shape_time_delay': 20.0}
-        else:  # Variables to be thought of for other shape type
+        elif self.type == "Circle":  # Generates a dictionary of variables for circular type shapes
+            self.var = {'radius': 1.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10, 'x0': 0.0, 'y0': 0.0,
+                        'z0': 0.0, 'offset': 5.0, 'speed': 120, 'speed_multiplier': 1, 'bed_T': 68.0, 'nozzle_T': 79.0,
+                        'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 20.0}
+        else:
             self.var = {}
 
 
@@ -37,13 +41,13 @@ st.text("Note: all values are of the order [mm], [min], [oC] & [-] or any combin
 column = st.beta_columns(shapes_number)
 shapes = [0] * shapes_number
 shape_choice = [0] * shapes_number
-shape_types = ["Rectangle", "Other"]
+shape_types = ["Rectangle", "Circle", "Other"]
 
 for i in np.arange(0, shapes_number):  # Iterates over all shapes
     shape_choice[i] = column[i].radio("Select shape type %i: " % (i+1), shape_types)
     shapes[i] = Shape(i, shape_choice[i])
-    if shape_choice[i] == "Rectangle":
-        column[i].success("Rectangle")
+    if shape_choice[i] != "Other":
+        column[i].success(shape_choice[i])
     else:
         column[i].error("Other shapes not possible yet, sorry.")
     for v in shapes[i].var:  # Change all variable values in dictionary
@@ -59,17 +63,23 @@ for i in np.arange(0, shapes_number):  # Iterates over all shapes
             elif i == 0:
                 shapes[i].var[v] = column[i].number_input("Shape %i: %s (HOME)" % ((i + 1), v), value=shapes[i].var[v])
             else:
-                shapes[i].var[v] = column[i].number_input("Shape %i: changge in %s from HOME" % ((i + 1), v), value=shapes[i].var[v])
+                shapes[i].var[v] = column[i].number_input("Shape %i: change in %s from HOME" % ((i + 1), v),
+                                                          value=shapes[i].var[v])
     shapes[i].var["file_name"] = file_name
     shapes[i].var['dir_name'] = os.getcwdb().decode()
 
 # Generate path
 for i, shape in enumerate(shapes):
     if i != 0:
-        shape.path2d = shaper.rectangle_more(shape.var)
+        if shape.type == 'Rectangle':
+            shape.path2d = shaper.rectangle_more(shape.var)
+        elif shape.type == 'Circle':
+            shape.path2d = shaper.circle_more(shape.var)
     else:
-        shape.path2d = shaper.rectangle_first(shape.var)
-
+        if shape.type == 'Rectangle':
+            shape.path2d = shaper.rectangle_first(shape.var)
+        elif shape.type == 'Circle':
+            shape.path2d = shaper.circle_first(shape.var)
 for shape in shapes:
     if shape.var['dz_line'] == 0:
         shape.path3d = np.column_stack((shape.path2d, np.full(len(shape.path2d), shape.var['line_thickness'])))
@@ -84,26 +94,14 @@ for shape in shapes:
 # Generates the shapes to be printed for the user to see if they are as intended
 fig = go.Figure()
 for number, shape in enumerate(shapes):
-    x = shape.path3d[:, 0]
-    y = shape.path3d[:, 1]
-    z = shape.path3d[:, 2]
+    x, y, z = shape.path3d[:, 0], shape.path3d[:, 1], shape.path3d[:, 2]
     name = ("Shape " + str(number))
     fig.add_trace(go.Scatter3d(x=x, y=y, z=z, opacity=1, name=("Shape " + str(number+1))))
     fig.add_trace(go.Mesh3d(x=x, y=y, z=z, opacity=0.5))
 fig.add_trace(go.Scatter3d(x=[0], y=[0], z=[0], opacity=0.5, name="Home"))
-fig.update_layout(scene=dict(
-    xaxis_title='x [mm]',
-    yaxis_title='y [mm]',
-    zaxis_title='z [mm]'),
-    width=700,
-    margin=dict(r=20, b=10, l=10, t=10))
-fig.update_layout(
-    title={
-        'text': "Your to-be printed shapes!",
-        'y':1,
-        'x':0.5,
-        'xanchor': 'center',
-        'yanchor': 'top'})
+fig.update_layout(scene=dict(xaxis_title='x [mm]', yaxis_title='y [mm]', zaxis_title='z [mm]'), width=700,
+                  margin=dict(r=20, b=10, l=10, t=10))
+fig.update_layout(title={'text': "Your to-be printed shapes!", 'y': 1, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'})
 st.plotly_chart(fig)
 
 # Makes sure if the file name already exists that it is deleted
