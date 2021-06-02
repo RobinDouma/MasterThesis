@@ -32,15 +32,14 @@ def gcode_writer(path, var, shape_num, type):
             "G0 Z0 H2 ; goes to defined start z\n\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
             "G92 E0 ; replace extruder position : E[mm]\n\n"
-            "G4 P5000 ; wait P[ms]\n\n"
-            "; PRINTING : EXTRUSION\n"
-            "G1 Z%g E1 F%g\n"
-            "G1 X%g Y%g E1 F%g\n"
-            "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'][0], path[0][0], path[0][1], var['speed'][0],
-                                     path[1][0], path[1][1], var['speed'][0])
-            )  # printing start-up
+            "G4 P5000 ; wait P[ms]\n\n")  # printing start-up
     line_thickness = var['line_thickness']
     if type == 'Rectangle':
+        f.write("; PRINTING : EXTRUSION\n"
+                "G1 Z%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'][0], path[0][0], path[0][1],
+                                         var['speed'][0], path[1][0], path[1][1], var['speed'][0]))
         for i, xy in enumerate(path[2::][:]):
             s = int(i % 4)
             flow_multiplier = var['speed'][s] / 120
@@ -51,14 +50,19 @@ def gcode_writer(path, var, shape_num, type):
                 line_thickness += var['dz_line']
                 f.write("G1 Z%g E1 F%g\n"
                         "M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-                        "nozzle[mm]\n\n" % (line_thickness, var['speed'][s], (1000 * flow_multiplier), line_thickness,
+                        "nozzle[mm]\n" % (line_thickness, var['speed'][s], (1000 * flow_multiplier), line_thickness,
                                             var['nozzle_W']))
             if (var['speed'][s] != var['speed'][s-1]) & (i != 0):
                 f.write("M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % ((1000 * flow_multiplier), line_thickness, var['nozzle_W']))
-            f.write("G1 X%g Y%g E1 F%g\n" % (xy[0], xy[1], var['speed'][s]))
+            f.write("G1 X%g Y%g E1 F%g\n\n" % (xy[0], xy[1], var['speed'][s]))
     elif type == 'Circle':
-        for circle in np.arange(var['lines']):
+        f.write("; PRINTING : EXTRUSION\n"
+                "G1 Z%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'], path[0][0], path[0][1],
+                                         var['speed'], path[1, 0], path[0, 1], var['speed']))
+        for circle in range(0, var['lines']):
             flow_multiplier = var['speed'] / 120
             if (var['speed_multiplier'] != 0) & (circle != 0):  # if after each contour speed is to be multiplied
                 var['speed'] *= var['speed_multiplier']
@@ -66,19 +70,19 @@ def gcode_writer(path, var, shape_num, type):
                 line_thickness += var['dz_line']
                 f.write("G1 Z%g E1 F%g\n"
                         "M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-                        "nozzle[mm]\n\n" % (line_thickness, var['speed'], (1000 * flow_multiplier), line_thickness,
+                        "nozzle[mm]\n" % (line_thickness, var['speed'], (1000 * flow_multiplier), line_thickness,
                                             var['nozzle_W']))
-            if (var['speed'] != var['speed'][circle-1]) & (circle != 0):
+            if (var['speed_multiplier'] != 1) & (circle != 0):
                 f.write("M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % ((1000 * flow_multiplier), line_thickness, var['nozzle_W']))
             if circle != 0:
                 f.write("G0 X%g\n" % (path[1, 0] + var['line_spacing'] * circle))
-                f.write("G3 X%g Y%g I%g J%g E1 F%g\n" % ((path[1, 0] + var['linespacing'] * circle), path[1, 1],
-                                                         (var['radius'] + var['offset']), path[1, 1], var['speed']))
+                f.write("G3 X%g Y%g I%g J%g E1 F%g\n\n" % ((path[1, 0] + var['line_spacing'] * circle), path[0, 1],
+                                                         (var['radius'] + var['offset']), path[0, 1], var['speed']))
             else:
-                f.write("G3 X%g Y%g I%g J%g E1 F%g\n" % (path[1, 0], path[1, 1], (var['radius'] + var['offset']),
-                                                         path[1, 1], var['speed']))
-    f.write("\n; PRINTING : FINALIZATION\n"
+                f.write("G3 X%g Y%g I%g J%g E1 F%g\n\n" % (path[1, 0], path[0, 1], (var['radius'] + var['offset']),
+                                                         path[0, 1], var['speed']))
+    f.write("; PRINTING : FINALIZATION\n"
             "G0 Z50 ; go up Z[mm]\n\n"
             "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
             "G4 P1000 ; wait P[ms]\n"
@@ -114,16 +118,15 @@ def gcode_writer_more(path, var, shape_num,type):
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
             "G92 E0 ; replace extruder position : E[mm]\n\n"
-            "G4 P5000 ; wait P[ms]\n\n"
-            "; PRINTING : EXTRUSION\n"
-            "G1 Z%g E1 F%g\n"
-            "G1 X%g Y%g E1 F%g\n"
-            "G1 X%g Y%g E1 F%g\n" % (var['x0'], var['y0'], float((var['shape_time_delay'] * 60000)),
-                                     var['line_thickness'], var['speed'][0], path[0][0], path[0][1], var['speed'][0],
-                                     path[1][0], path[1][1], var['speed'][0])
+            "G4 P5000 ; wait P[ms]\n\n" % (var['x0'], var['y0'], float((var['shape_time_delay'] * 60000)))
             )  # printing start-up
     line_thickness = var['line_thickness']
     if type == 'Rectangle':
+        f.write("; PRINTING : EXTRUSION\n"
+                "G1 Z%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'][0], path[0][0], path[0][1],
+                                         var['speed'][0], path[1][0], path[0][1], var['speed'][0]))
         for i, xy in enumerate(path[2::][:]):
             s = int(i % 4)
             flow_multiplier = var['speed'][s] / 120
@@ -134,14 +137,19 @@ def gcode_writer_more(path, var, shape_num,type):
                 line_thickness += var['dz_line']
                 f.write("G1 Z%g E1 F%g\n"
                         "M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-                        "nozzle[mm]\n\n" % (line_thickness, var['speed'][s], (1000 * flow_multiplier), line_thickness,
+                        "nozzle[mm]\n" % (line_thickness, var['speed'][s], (1000 * flow_multiplier), line_thickness,
                                             var['nozzle_W']))
             if (var['speed'][s] != var['speed'][s-1]) & (i != 0):
                 f.write("M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % ((1000 * flow_multiplier), line_thickness, var['nozzle_W']))
             f.write("G1 X%g Y%g E1 F%g\n" % (xy[0], xy[1], var['speed'][s]))
     elif type == 'Circle':
-        for circle in np.arange(var['lines']):
+        f.write("; PRINTING : EXTRUSION\n"
+                "G1 Z%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n\n" % (var['line_thickness'], var['speed'], path[0][0], path[0][1],
+                                         var['speed'], path[1][0], path[0][1], var['speed']))
+        for circle in range(0, var['lines']):
             flow_multiplier = var['speed'] / 120
             if (var['speed_multiplier'] != 0) & (circle != 0):  # if after each contour speed is to be multiplied
                 var['speed'] *= var['speed_multiplier']
@@ -149,19 +157,19 @@ def gcode_writer_more(path, var, shape_num,type):
                 line_thickness += var['dz_line']
                 f.write("G1 Z%g E1 F%g\n"
                         "M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-                        "nozzle[mm]\n\n" % (line_thickness, var['speed'], (1000 * flow_multiplier), line_thickness,
+                        "nozzle[mm]\n" % (line_thickness, var['speed'], (1000 * flow_multiplier), line_thickness,
                                             var['nozzle_W']))
-            if (var['speed'] != var['speed'][circle-1]) & (circle != 0):
+            if (var['speed_multiplier'] != 1) & (circle != 0):
                 f.write("M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % ((1000 * flow_multiplier), line_thickness, var['nozzle_W']))
             if circle != 0:
                 f.write("G0 X%g\n" % (path[1, 0] + var['line_spacing'] * circle))
-                f.write("G3 X%g Y%g I%g J%g E1 F%g\n" % ((path[1, 0] + var['linespacing'] * circle), path[1, 1],
-                                                         (var['radius'] + var['offset']), path[1, 1], var['speed']))
+                f.write("G3 X%g Y%g I%g J%g E1 F%g\n\n" % ((path[1, 0] + var['line_spacing'] * circle), path[0, 1],
+                                                         (var['radius'] + var['offset']), path[0, 1], var['speed']))
             else:
-                f.write("G3 X%g Y%g I%g J%g E1 F%g\n" % (path[1, 0], path[1, 1], (var['radius'] + var['offset']),
-                                                         path[1, 1], var['speed']))
-    f.write("\n; PRINTING : FINALIZATION\n"
+                f.write("G3 X%g Y%g I%g J%g E1 F%g\n\n" % (path[1, 0], path[0, 1], (var['radius'] + var['offset']),
+                                                         path[0, 1], var['speed']))
+    f.write("; PRINTING : FINALIZATION\n"
             "G0 Z50 ; go up Z[mm]\n\n"
             "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
             "G4 P1000 ; wait P[ms]\n"
