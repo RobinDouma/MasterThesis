@@ -112,7 +112,9 @@ if os.path.exists("{0}\\G-Code\\{1}".format(shapes[0].var['dir_name'], shapes[0]
 if st.button("Generate G-Code"):
     st.write("G-Code generated named: %s.\n\nStored in ""%s""\\G-Code."
              "\n\nGood printing!" % (shapes[0].var['file_name'], shapes[0].var['dir_name']))
-    writer.gcode_writer(shapes[0].path2d, shapes[0].var, 1)
+    if shapes[0].type == 'Rectangle':
+        writer.gcode_writer(shapes[0].path2d, shapes[0].var, 1, shapes[0].type)
     if shapes_number > 1:
         for shape_num in range(1, shapes_number):
-            writer.gcode_writer_more(shapes[shape_num].path2d, shapes[shape_num].var, (shape_num + 1))
+            writer.gcode_writer_more(shapes[shape_num].path2d, shapes[shape_num].var, (shape_num + 1),
+                                     shapes[shape_num].type)
