@@ -87,18 +87,22 @@ def gcode_writer(path, var, shape_num, type):
                 "G1 Z%g E1 F%g\n"
                 "G1 X%g Y%g E1 F%g\n"
                 "G1 X%g Y%g E1 F%g\n\n" % (var['line_thickness'], var['speed'], path[0][0], path[0][1],
-                                         var['speed'], path[1][0], path[1][1], var['speed']))
+                                           var['speed'], path[1][0], path[1][1], var['speed']))
         for i, xy in enumerate(path[2::][:]):
             if var['dz_line'] != 0:  # adds z/flow increase if required per rectangular outline
                 line_thickness += var['dz_line']
                 f.write("G1 Z%g E1 F%g\n" % (line_thickness, var['speed']))
-            if var['speed_multiplier'] != 1:
+            if (var['speed_multiplier'] != 1) | (var['speed_add'] != 0):
                 var['speed'] *= var['speed_multiplier']
-            if var['P_multiplier'] != 1:
+                var['speed'] += var['speed_add']
+            if (var['P_multiplier'] != 1) | (var['P_add'] != 0):
                 var['P_value'] *= var['P_multiplier']
-            if var['S_multiplier'] != 1:
+                var['P_value'] += var['P_add']
+            if (var['S_multiplier'] != 1) | (var['S_add'] != 0):
                 var['S_value'] *= var['S_multiplier']
-            if (var['dz_line'] != 0) | (var['P_multiplier'] != 1) | (var['S_multiplier'] != 1):
+                var['S_value'] += var['S_add']
+            if (var['dz_line'] != 0) | (var['P_multiplier'] != 1) | (var['P_add'] != 0) | (var['S_multiplier'] != 1) | \
+                    (var['S_add'] != 0):
                 f.write("M221 P%g S%g T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % (var['P_value'], var['S_value'], line_thickness, var['nozzle_W']))
             f.write("G1 X%g Y%g E1 F%g\n\n" % (xy[0], xy[1], var['speed']))
