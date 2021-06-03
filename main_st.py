@@ -27,9 +27,9 @@ class Shape:
                         'nozzle_T': 79.0, 'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 20.0}
         elif self.type == "Line":  # Generates a dictionary of variables for rectangle type shapes
             self.var = {'length': 20.0, 'segments': 10, 'line_thickness': 0.050, 'x0': 0.0, 'y0': 0.0, 'z0': 0.0,
-                        'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'bed_T': 68.0, 'nozzle_T': 79.0,
-                        'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 0.5, 'P_value': 1000, 'S_value': 1,
-                        'P_multiplier': 1, 'S_multiplier': 1}
+                        'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'speed_add': 0, 'bed_T': 68.0,
+                        'nozzle_T': 79.0, 'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 0.5, 'P_value': 1000.0,
+                        'S_value': 1.0, 'P_multiplier': 1.0, 'P_add': 0, 'S_multiplier': 1.0, 'S_add': 0}
         else:
             self.var = {}
 
