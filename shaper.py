@@ -98,3 +98,31 @@ def circle_more(var):
     path_end = [(var['x0'] + var['offset'] + var['radius']), var['y0']]  # create a path to middle of square to end print
     path = np.vstack((path_begin, path, path_end))  # adds begin and end offset to print path
     return path
+
+
+def line_first(var):
+    """"Calculates coordinates for printer to follow"""
+    path = np.zeros(((var['segments'] + 1), 2))  # path to be generated
+    path[0][:] = [0, 0]  # first coordinates outline
+    path[1::][1] = 0
+    for seg in range(1, (var['segments'] + 1)):  # writes all other coordinates of shape (minus last line)
+        path[seg][0] = seg * var['length'] / var['segments']
+    # Creates the complete and usable shape from coordinates in path
+    path[:, 0] = path[:, 0] + var['offset']  # adds the offset to x coordinates
+    path_begin = [0, 0]  # gives a printable offset line from given coordinates
+    path = np.vstack((path_begin, path))  # adds begin and end offset to print path
+    return path
+
+
+def line_more(var):
+    """"Calculates coordinates for printer to follow"""
+    path = np.zeros(((var['segments'] + 1), 2))  # path to be generated
+    path[0][:] = [var['x0'], var['y0']]  # first coordinates outline
+    path[1::][1] = var['y0']
+    for seg in range(1, (var['segments'] + 1)):  # writes all other coordinates of shape (minus last line)
+        path[seg][0] = seg * var['length'] / var['segments']
+    # Creates the complete and usable shape from coordinates in path
+    path[:, 0] = path[:, 0] + var['offset']  # adds the offset to x coordinates
+    path_begin = [var['x0'], var['y0']]  # gives a printable offset line from given coordinates
+    path = np.vstack((path_begin, path))  # adds begin and end offset to print path
+    return path

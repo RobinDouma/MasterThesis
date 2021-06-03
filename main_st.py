@@ -25,6 +25,11 @@ class Shape:
             self.var = {'radius': 10.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10, 'x0': 0.0, 'y0': 0.0,
                         'z0': 0.0, 'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'bed_T': 68.0,
                         'nozzle_T': 79.0, 'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 20.0}
+        elif self.type == "Line":  # Generates a dictionary of variables for rectangle type shapes
+            self.var = {'length': 20.0, 'segments': 10, 'line_thickness': 0.050, 'x0': 0.0, 'y0': 0.0, 'z0': 0.0,
+                        'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'bed_T': 68.0, 'nozzle_T': 79.0,
+                        'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 0.5, 'P_value': 1000, 'S_value': 1,
+                        'P_multiplier': 1, 'S_multiplier': 1}
         else:
             self.var = {}
 
@@ -41,7 +46,7 @@ st.text("Note: all values are of the order [mm], [min], [oC] & [-] or any combin
 column = st.beta_columns(shapes_number)
 shapes = [0] * shapes_number
 shape_choice = [0] * shapes_number
-shape_types = ["Rectangle", "Circle", "Other"]
+shape_types = ["Rectangle", "Circle", "Line", "Other"]
 
 for i in np.arange(0, shapes_number):  # Iterates over all shapes
     shape_choice[i] = column[i].radio("Select shape type %i: " % (i+1), shape_types)
@@ -75,11 +80,15 @@ for i, shape in enumerate(shapes):
             shape.path2d = shaper.rectangle_more(shape.var)
         elif shape.type == 'Circle':
             shape.path2d = shaper.circle_more(shape.var)
+        elif shape.type == 'Line':
+            shape.path2d = shaper.line_more(shape.var)
     else:
         if shape.type == 'Rectangle':
             shape.path2d = shaper.rectangle_first(shape.var)
         elif shape.type == 'Circle':
             shape.path2d = shaper.circle_first(shape.var)
+        elif shape.type == 'Line':
+            shape.path2d = shaper.line_first(shape.var)
 for shape in shapes:
     if shape.var['dz_line'] == 0:
         shape.path3d = np.column_stack((shape.path2d, np.full(len(shape.path2d), shape.var['line_thickness'])))
@@ -92,9 +101,14 @@ for shape in shapes:
             z += shape.var['line_thickness']
             shape.path3d = np.column_stack((shape.path2d, z))
         elif shape.type == 'Circle':
-            for i in range(3, len(z), 180):
+            for i in range(2, len(z), 180):
                 z[i:(i + 180)] = z[i-1] + shape.var['dz_line']
             z[-1] = z[-2]
+            z += shape.var['line_thickness']
+            shape.path3d = np.column_stack((shape.path2d, z))
+        elif shape.type == 'Line':
+            for i in range(2, len(z)):
+                z[i] = z[i-1] + shape.var['dz_line']
             z += shape.var['line_thickness']
             shape.path3d = np.column_stack((shape.path2d, z))
 # Generates the shapes to be printed for the user to see if they are as intended

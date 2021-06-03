@@ -82,6 +82,26 @@ def gcode_writer(path, var, shape_num, type):
             else:
                 f.write("G3 X%g Y%g I%g J%g E1 F%g\n\n" % (path[1, 0], path[0, 1], (var['radius'] + var['offset']),
                                                          path[0, 1], var['speed']))
+    elif type == 'Line':
+        f.write("; PRINTING : EXTRUSION\n"
+                "G1 Z%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'], path[0][0], path[0][1],
+                                         var['speed'], path[1][0], path[1][1], var['speed']))
+        for i, xy in enumerate(path[2::][:]):
+            var['speed'] *= var['speed_multiplier']
+            if var['dz_line'] != 0:  # adds z/flow increase if required per rectangular outline
+                line_thickness += var['dz_line']
+                f.write("G1 Z%g E1 F%g\n"
+                        "M221 P%g S%g T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
+                        "nozzle[mm]\n" % (line_thickness, var['speed'], var['P_value'] * var['P_multiplier'] * (i + 1),
+                                          var['S_value'] * var['S_multiplier'] * (i + 1), line_thickness,
+                                          var['nozzle_W']))
+            if var['speed_multiplier'] != 1:
+                f.write("M221 P%g S%g T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
+                        "nozzle[mm]\n" % (var['P_value'] * var['P_multiplier'] * (i + 1), var['S_value'] *
+                                          var['S_multiplier'] * (i + 1), line_thickness, var['nozzle_W']))
+            f.write("G1 X%g Y%g E1 F%g\n\n" % (xy[0], xy[1], var['speed'] * var['speed_multiplier'] * (i + 1)))
     f.write("; PRINTING : FINALIZATION\n"
             "G0 Z50 ; go up Z[mm]\n\n"
             "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
@@ -94,7 +114,7 @@ def gcode_writer(path, var, shape_num, type):
     return
 
 
-def gcode_writer_more(path, var, shape_num,type):
+def gcode_writer_more(path, var, shape_num, type):
     """Writes the g-code to be used by printer with some default lines"""
     # Removes end of program of previous shapes
     edit = open("{0}\\G-Code\\{1}".format(var['dir_name'], var['file_name']))
@@ -169,6 +189,26 @@ def gcode_writer_more(path, var, shape_num,type):
             else:
                 f.write("G3 X%g Y%g I%g J%g E1 F%g\n\n" % (path[1, 0], path[0, 1], (var['radius'] + var['offset']),
                                                          path[0, 1], var['speed']))
+    elif type == 'Line':
+        f.write("; PRINTING : EXTRUSION\n"
+                "G1 Z%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n"
+                "G1 X%g Y%g E1 F%g\n" % (var['line_thickness'], var['speed'], path[0][0], path[0][1],
+                                         var['speed'], path[1][0], path[1][1], var['speed']))
+        for i, xy in enumerate(path[2::][:]):
+            var['speed'] *= var['speed_multiplier']
+            if var['dz_line'] != 0:  # adds z/flow increase if required per rectangular outline
+                line_thickness += var['dz_line']
+                f.write("G1 Z%g E1 F%g\n"
+                        "M221 P%g S%g T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
+                        "nozzle[mm]\n" % (line_thickness, var['speed'], var['P_value'] * var['P_multiplier'] * (i + 1),
+                                          var['S_value'] * var['S_multiplier'] * (i + 1), line_thickness,
+                                          var['nozzle_W']))
+            if var['speed_multiplier'] != 1:
+                f.write("M221 P%g S%g T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
+                        "nozzle[mm]\n" % (var['P_value'] * var['P_multiplier'] * (i + 1), var['S_value'] *
+                                          var['S_multiplier'] * (i + 1), line_thickness, var['nozzle_W']))
+            f.write("G1 X%g Y%g E1 F%g\n\n" % (xy[0], xy[1], var['speed'] * var['speed_multiplier'] * (i + 1)))
     f.write("; PRINTING : FINALIZATION\n"
             "G0 Z50 ; go up Z[mm]\n\n"
             "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
