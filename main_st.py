@@ -17,18 +17,19 @@ class Shape:
         self.path2d = []
         self.path3d = []
         if self.type == "Rectangle":  # Generates a dictionary of variables for rectangle type shapes
-            self.var = {'x_length': 20.0, 'y_length': 20.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10,
+            self.var = {'x_length': 20.0, 'y_length': 20.0, 'line_spacing': 0.3, 'line_thickness': 0.05, 'lines': 10,
                         'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'offset': 5.0, 'speed': [120.0, 360.0, 600.0, 840.0],
-                        'speed_multiplier': [1.0, 1.0, 1.0, 1.0], 'bed_T': 68.0, 'nozzle_T': 79.0, 'nozzle_W': 0.233,
-                        'dz_line': 0.0, 'shape_time_delay': 20.0}
+                        'speed_add': [0.0, 0.0, 0.0, 0.0], 'bed_T': 68.0, 'nozzle_T': 79.0, 'nozzle_W': 0.335,
+                        'dz_line': 0.0, 'shape_time_delay': 20.0, 'P_value': [1000.0, 2000.0, 3000.0, 4000.0],
+                        'P_add': [0.0, 0.0, 0.0, 0.0] }
         elif self.type == "Circle":  # Generates a dictionary of variables for circular type shapes
-            self.var = {'radius': 10.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10, 'x0': 0.0, 'y0': 0.0,
-                        'z0': 0.0, 'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'bed_T': 68.0,
-                        'nozzle_T': 79.0, 'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 20.0}
+            self.var = {'radius': 10.0, 'line_spacing': 0.3, 'line_thickness': 0.05, 'lines': 10, 'x0': 0.0, 'y0': 0.0,
+                        'z0': 0.0, 'offset': 5.0, 'speed': 120.0, 'speed_add': 0.0, 'bed_T': 68.0, 'nozzle_T': 79.0,
+                        'nozzle_W': 0.335, 'dz_line': 0.0, 'shape_time_delay': 20.0, 'P_value': 1000.0, 'P_add': 0.0}
         elif self.type == "Line":  # Generates a dictionary of variables for rectangle type shapes
             self.var = {'length': 60.00, 'segments': 4, 'line_thickness': 0.050, 'x0': 0.0, 'y0': 0.0, 'z0': 0.0,
                         'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'speed_add': 240.0, 'bed_T': 68.0,
-                        'nozzle_T': 79.0, 'nozzle_W': 0.233, 'dz_line': 0.0, 'shape_time_delay': 0.5, 'P_value': 1000.0,
+                        'nozzle_T': 79.0, 'nozzle_W': 0.335, 'dz_line': 0.0, 'shape_time_delay': 0.0, 'P_value': 1000.0,
                         'S_value': 1.0, 'P_multiplier': 1.0, 'P_add': 0.0, 'S_multiplier': 1.0, 'S_add': 0.0}
         else:
             self.var = {}
