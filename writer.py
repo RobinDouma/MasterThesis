@@ -31,8 +31,7 @@ def gcode_writer(path, var, shape_num, type):
             "G0 X0 Y0 ; goes to defined start x & y\n"
             "G0 Z0 H2 ; goes to defined start z\n\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
-            "G92 E0 ; replace extruder position : E[mm]\n\n"
-            "G4 P5000 ; wait P[ms]\n\n")  # printing start-up
+            "G92 E0 ; replace extruder position : E[mm]\n\n")  # printing start-up
     line_thickness = var['line_thickness']
     if type == 'Rectangle':
         f.write("; PRINTING : EXTRUSION\n"
@@ -108,10 +107,6 @@ def gcode_writer(path, var, shape_num, type):
             f.write("G1 X%g Y%g E1 F%g\n\n" % (xy[0], xy[1], var['speed']))
     f.write("; PRINTING : FINALIZATION\n"
             "G0 Z50 ; go up Z[mm]\n\n"
-            "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
-            "G4 P1000 ; wait P[ms]\n"
-            "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
-            "G4 P10000 ; wait P[ms]\n\n"
             "G53 ; clear offsets\n"
             "M30 ; end of program")  # printing start-up
     f.close()
@@ -140,10 +135,8 @@ def gcode_writer_more(path, var, shape_num, type):
             "G0 Z0 H2 ; goes to defined start z\n\n"
             "G4 P%f ; wait P[ms] between shapes\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
-            "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
-            "G92 E0 ; replace extruder position : E[mm]\n\n"
-            "G4 P5000 ; wait P[ms]\n\n" % (var['x0'], var['y0'], float((var['shape_time_delay'] * 60000)))
-            )  # printing start-up
+            "G92 E0 ; replace extruder position : E[mm]\n\n" % (var['x0'], var['y0'], float((var['shape_time_delay'] *
+                                                                                             60000))))  # printing start
     line_thickness = var['line_thickness']
     if type == 'Rectangle':
         f.write("; PRINTING : EXTRUSION\n"
@@ -219,10 +212,6 @@ def gcode_writer_more(path, var, shape_num, type):
             f.write("G1 X%g Y%g E1 F%g\n\n" % (xy[0], xy[1], var['speed']))
     f.write("; PRINTING : FINALIZATION\n"
             "G0 Z50 ; go up Z[mm]\n\n"
-            "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
-            "G4 P1000 ; wait P[ms]\n"
-            "M721 S10000 E99999 P6000 I0 T12 ; unprime\n"
-            "G4 P10000 ; wait P[ms]\n\n"
             "G53 ; clear offsets\n"
             "M30 ; end of program")  # printing start-up
     f.close()

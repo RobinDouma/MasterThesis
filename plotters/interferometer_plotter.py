@@ -4,9 +4,9 @@ import numpy as np
 from glob import glob as gb
 
 # Change the file name and directory here for calculation
-file_name = '210601 r2 s4'
+file_name = '210604 line flow-speed test small lines 5-1 s2 mid'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data' \
-      '\\8. Inferometer\\210421 CLCEA2.1\\210602 210601 CLCEA2.1\\'
+      '\\8. Inferometer\\210421 CLCEA2.1\\210604 210604 CLCEA2.1\\'
 x, y, y_diff = [], [], []
 
 # Extracts the values from the .dat file
@@ -23,7 +23,7 @@ y_diff_i_max = y_diff.index(max(y_diff))
 
 # Normalizes height w.r.t. glass height (treating glass as flat)
 calibration = np.average(y[0:y_diff_i_max])
-y -= calibration
+y -= calibration -1
 
 # Calculates some interesting values and prints them
 height_avg = np.average(y[y_diff_i_max::])
@@ -36,6 +36,6 @@ plt.plot(x, y)
 plt.xlabel("x [μm]")
 plt.ylabel("Line height [μm]")
 plt.title("Profile of %s.dat" % file_name)
-plt.text(x[y_diff_i_max], 10, "Average thickness: " + str(int(height_avg)) + "μm")
-plt.text(x[y_diff_i_max], 0, "Max thickness: " + str(int(height_max)) + "μm")
+# plt.text(x[y_diff_i_max], 10, "Average thickness: " + str(int(height_avg)) + "μm")
+# plt.text(x[y_diff_i_max], 0, "Max thickness: " + str(int(height_max)) + "μm")
 plt.savefig(file_dir + file_name + ".png")
