@@ -4,9 +4,9 @@ import numpy as np
 from glob import glob as gb
 
 # Change the file name and directory here for calculation
-file_name = '210604 line flow-speed test small lines 5-1 s2 mid'
+file_name = '210604 small lines 10-6 s3'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data' \
-      '\\8. Inferometer\\210421 CLCEA2.1\\210604 210604 CLCEA2.1\\'
+      '\\8. Inferometer\\210421 CLCEA2.1\\210608 210604 CLCEA2.1\\'
 x, y, y_diff = [], [], []
 
 # Extracts the values from the .dat file
