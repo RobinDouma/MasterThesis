@@ -19,14 +19,14 @@ class Spectrum:
 # Change the file name and directory here for calculation
 file_extension = 'csv'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis\\' \
-           'Perkin Elmer\\210421 CLCEA2.1\\210608 210518&20 CLCEA2.1 lines - Reflection at RT - normalized glass\\'
+           'Perkin Elmer\\210421 CLCEA2.1\\210628 210518 CLCEA2.1 lines -Absorbance at RT with R&S - glass baseline\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
 spectra = [0] * len(file_names)
 # Writes incomprehensible data into usable classes
 for file_i, file_name in enumerate(file_names):
     x, y = [], []
-    name = file_name[206:-15]
+    name = file_name[196:-15]
     # Extracts the values from the .csv file
     with open(file_name) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
@@ -57,8 +57,8 @@ for file_i, file_name in enumerate(file_names):
 # Plots the profile
 viridis = cm.get_cmap('viridis', len(spectra))
 for spectrum_i, spectrum in enumerate(spectra):
-    if spectrum_i == (len(spectra) - 1):  # if last spectrum is baseline
-        break
+    #if spectrum_i == (len(spectra) - 1):  # if last spectrum is baseline
+      #  break
     color = spectrum_i / (len(spectra) - 1)
     plt.plot(spectrum.x, spectrum.y, label=spectrum.id, color=viridis(color))
     plt.xlabel("Angle")
@@ -80,8 +80,8 @@ worksheet_max.write(0, 1, 'Peak [nm]')
 worksheet_max.write(0, 2, 'Reflectance [%R]')
 worksheet_gen.write(0, 0, 'Wavelength [nm]')
 for line, spec in enumerate(spectra):
-    if line == (len(spectra) - 1):  # if last spectrum is baseline
-        break
+    #if line == (len(spectra) - 1):  # if last spectrum is baseline
+      #  break
     worksheet_max.write(line + 1, 0, spec.id)
     worksheet_max.write(line + 1, 1, spec.x_max)
     worksheet_max.write(line + 1, 2, spec.y_max)
