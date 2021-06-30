@@ -4,9 +4,9 @@ import numpy as np
 from glob import glob as gb
 
 # Change the file name and directory here for calculation
-file_name = '210604 small lines 10-6 s3'
+file_name = '210629 210609 CLCEA2 g2 r4 75C left'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data' \
-      '\\8. Inferometer\\210421 CLCEA2.1\\210608 210604 CLCEA2.1\\'
+      '\\8. Inferometer\\210609 CLCEA2\\210630 210629 CLCEA2\\'
 x, y, y_diff = [], [], []
 
 # Extracts the values from the .dat file
@@ -22,8 +22,8 @@ for i in np.arange(len(y)):
 y_diff_i_max = y_diff.index(max(y_diff))
 
 # Normalizes height w.r.t. glass height (treating glass as flat)
-calibration = np.average(y[0:y_diff_i_max])
-y -= calibration -1
+#calibration = np.average(y[0:y_diff_i_max])
+#y -= calibration -1
 
 # Calculates some interesting values and prints them
 height_avg = np.average(y[y_diff_i_max::])
