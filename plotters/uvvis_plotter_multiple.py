@@ -19,7 +19,7 @@ class Spectrum:
 # Change the file name and directory here for calculation
 file_extension = 'csv'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis\\' \
-           'Perkin Elmer\\210421 CLCEA2.1\\210628 210518 CLCEA2.1 lines -Absorbance at RT with R&S - glass baseline\\'
+           'Perkin Elmer\\210421 CLCEA2.1\\210726 210709 CLCEA2 lines free - Reflection at RT - normalized glassawd\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
 spectra = [0] * len(file_names)

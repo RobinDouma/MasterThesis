@@ -23,7 +23,7 @@ def gcode_writer(path, var, shape_num, type):
             "M722 S25000 E1 P5000  T12 ; set prime value for print move - speed[p/s], extrusion[p], "
             "prime start wrt move end[ms], tool[#]\n"
             "M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-            "nozzle[mm]\n\n" % (var['z0'], var['x0'], var['y0'], var['bed_T'], var['nozzle_T'], var['P_value'][0],
+            "nozzle[mm]\n\n" % (var['z0'], var['x0'], var['y0'], var['bed_T'], var['nozzle_T'], var['P_value'],
                                 var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
             "T1 ; slot 1\n"
@@ -82,7 +82,7 @@ def gcode_writer(path, var, shape_num, type):
             if (var['speed_add'] != 0) | (var['dz_line'] != 0) | (var['P_add'] != 0):
                 f.write("M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % (var['P_value'], line_thickness, var['nozzle_W']))
-            f.write("G1 X%g\n" % (path[1, 0] + var['line_spacing'] * circle))
+            f.write("G1 X%g E1 F%g\n" % (path[1, 0] + var['line_spacing'] * circle, var['speed']))
             f.write("G3 I%g E1 F%g\n\n" % ((var['radius'] - var['line_spacing'] * circle), var['speed']))
     elif type == 'Line':
         f.write("; PRINTING : EXTRUSION\n"
@@ -132,7 +132,7 @@ def gcode_writer_more(path, var, shape_num, type):
             "M190 S%g ; bed : define temperature\n"
             "M109 T12 S%g ; slot 1 : define temperature\n\n"
             "M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
-            "nozzle[mm]\n\n" % (shape_num, var['bed_T'], var['nozzle_T'], var['P_value'][0],
+            "nozzle[mm]\n\n" % (shape_num, var['bed_T'], var['nozzle_T'], var['P_value'],
                                 var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
             "G0 X%g Y%g ; goes to defined start x & y\n"
@@ -191,7 +191,7 @@ def gcode_writer_more(path, var, shape_num, type):
             if (var['speed_add'] != 0) | (var['dz_line'] != 0) | (var['P_add'] != 0):
                 f.write("M221 P%g S1.0 T12 Z%g W%g  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], "
                         "nozzle[mm]\n" % (var['P_value'], line_thickness, var['nozzle_W']))
-            f.write("G1 X%g\n" % (path[1, 0] + var['line_spacing'] * circle))
+            f.write("G1 X%g E1 F%g\n" % (path[1, 0] + var['line_spacing'] * circle, var['speed']))
             f.write("G3 I%g E1 F%g\n\n" % ((var['radius'] - var['line_spacing'] * circle), var['speed']))
     elif type == 'Line':
         f.write("; PRINTING : EXTRUSION\n"
