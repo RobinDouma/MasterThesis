@@ -15,7 +15,7 @@ M660 H2 Z0 ; slot 1 : define start Z
 M6 T12 O2 X0 Y0 ; slot 1 : define start x & y
 ;M6 T13 O3 X45 Y84 ; slot 2 : define start x & y
 
-M190 S60 ; bed : define temperature
+M190 S65 ; bed : define temperature
 M109 T12 S60 ; slot 1 : define temperature
 
 M721 S25000 E1 P-5000 T12 ; set unprime value for non-print move - speed[p/s], extrusion[p], unprime start wrt move end[ms], tool[#]

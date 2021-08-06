@@ -25,6 +25,7 @@ def rectangle_first(var):
     path_begin = [0, 0]  # gives a printable offset line from given coordinates
     path_last_line = path_resized[-4] + [var['line_spacing'], var['line_spacing']]  # makes sure left side get last line
     path_end = (path_resized[0, :] + path_resized[2, :]) / 2  # create a path to middle of square to end print
+    path_end[0] += (path_end[0] - path_last_line[0])  # makes sure shape is filled
     path = np.vstack((path_begin, path_resized, path_last_line, path_end))  # adds begin and end offset to print path
     return path
 
@@ -53,6 +54,7 @@ def rectangle_more(var):
     path_begin = [var['x0'], var['y0']]  # gives a printable offset line from given coordinates
     path_last_line = path_resized[-4] + [var['line_spacing'], var['line_spacing']]  # makes sure left side get last line
     path_end = (path_resized[0, :] + path_resized[2, :]) / 2  # create a path to middle of square to end print
+    path_end[0] += (path_end[0] - path_last_line[0])  # makes sure shape is filled
     path = np.vstack((path_begin, path_resized, path_last_line, path_end))  # adds begin and end offset to print path
     return path
 

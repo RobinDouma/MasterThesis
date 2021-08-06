@@ -1,0 +1,410 @@
+; SHAPE 1 STARTS HERE
+
+; INITIALIZATION : GENERAL
+G28 Z0 ; home Z
+G28 X0 Y0 ; home X/Y
+
+G21 ; set units : mm
+G90 ; coordinates printing : absolute
+M82 ; coordinates extrusion : absolute
+
+; INITIALIZATION : PRINTING
+M660 H2 Z0 ; slot 1 : define start Z
+;M660 H3 Z119.999 ; slot 2 : define start z
+
+M6 T12 O2 X0 Y0 ; slot 1 : define start x & y
+;M6 T13 O3 X45 Y84 ; slot 2 : define start x & y
+
+M190 S68 ; bed : define temperature
+M109 T12 S80 ; slot 1 : define temperature
+
+M721 S25000 E1 P-5000 T12 ; set unprime value for non-print move - speed[p/s], extrusion[p], unprime start wrt move end[ms], tool[#]
+M722 S25000 E1 P5000  T12 ; set prime value for print move - speed[p/s], extrusion[p], prime start wrt move end[ms], tool[#]
+M221 P4000 S1.0 T12 Z0.1 W0.335  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], nozzle[mm]
+
+; PRINTING : START-UP
+T1 ; slot 1
+;T2 ; slot 2
+
+G0 X0 Y0 ; goes to defined start x & y
+G0 Z0 H2 ; goes to defined start z
+
+M722 S10000 E99999 P6000 I0 T12 ; prime
+G92 E0 ; replace extruder position : E[mm]
+
+; PRINTING : EXTRUSION
+G1 Z0.1 E1 F60
+G1 X0 Y0 E1 F60
+G1 X5 Y0 E1 F60
+G1 X25 Y0 E1 F60
+
+G1 X25 Y3 E1 F60
+
+G1 X5 Y3 E1 F60
+
+G1 X5 Y0.3 E1 F60
+
+G1 X24.7 Y0.3 E1 F60
+
+G1 X24.7 Y2.7 E1 F60
+
+G1 X5.3 Y2.7 E1 F60
+
+G1 X5.3 Y0.6 E1 F60
+
+G1 X24.4 Y0.6 E1 F60
+
+G1 X24.4 Y2.4 E1 F60
+
+G1 X5.6 Y2.4 E1 F60
+
+G1 X5.6 Y0.9 E1 F60
+
+G1 X24.1 Y0.9 E1 F60
+
+G1 X24.1 Y2.1 E1 F60
+
+G1 X5.9 Y2.1 E1 F60
+
+G1 X5.9 Y1.2 E1 F60
+
+G1 X23.8 Y1.2 E1 F60
+
+G1 X23.8 Y1.8 E1 F60
+
+G1 X6.2 Y1.8 E1 F60
+
+G1 X6.2 Y1.5 E1 F60
+
+G1 X23.8 Y1.5 E1 F60
+
+; PRINTING : FINALIZATION
+G0 Z50 ; go up Z[mm]
+
+;SHAPE 2 STARTS HERE
+
+; INITIALIZATION : PRINTING
+M190 S68 ; bed : define temperature
+M109 T12 S80 ; slot 1 : define temperature
+
+M221 P4000 S1.0 T12 Z0.1 W0.335  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], nozzle[mm]
+
+; PRINTING : START-UP
+G0 X0 Y4 ; goes to defined start x & y
+G0 Z0 H2 ; goes to defined start z
+
+G4 P0.000000 ; wait P[ms] between shapes
+M722 S10000 E99999 P6000 I0 T12 ; prime
+G92 E0 ; replace extruder position : E[mm]
+
+; PRINTING : EXTRUSION
+G1 Z0.1 E1 F120
+G1 X0 Y4 E1 F120
+G1 X5 Y4 E1 F120
+G1 X25 Y4 E1 F120
+
+G1 X25 Y7 E1 F120
+
+G1 X5 Y7 E1 F120
+
+G1 X5 Y4.3 E1 F120
+
+G1 X24.7 Y4.3 E1 F120
+
+G1 X24.7 Y6.7 E1 F120
+
+G1 X5.3 Y6.7 E1 F120
+
+G1 X5.3 Y4.6 E1 F120
+
+G1 X24.4 Y4.6 E1 F120
+
+G1 X24.4 Y6.4 E1 F120
+
+G1 X5.6 Y6.4 E1 F120
+
+G1 X5.6 Y4.9 E1 F120
+
+G1 X24.1 Y4.9 E1 F120
+
+G1 X24.1 Y6.1 E1 F120
+
+G1 X5.9 Y6.1 E1 F120
+
+G1 X5.9 Y5.2 E1 F120
+
+G1 X23.8 Y5.2 E1 F120
+
+G1 X23.8 Y5.8 E1 F120
+
+G1 X6.2 Y5.8 E1 F120
+
+G1 X6.2 Y5.5 E1 F120
+
+G1 X23.8 Y5.5 E1 F120
+
+; PRINTING : FINALIZATION
+G0 Z50 ; go up Z[mm]
+
+;SHAPE 3 STARTS HERE
+
+; INITIALIZATION : PRINTING
+M190 S68 ; bed : define temperature
+M109 T12 S80 ; slot 1 : define temperature
+
+M221 P4000 S1.0 T12 Z0.1 W0.335  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], nozzle[mm]
+
+; PRINTING : START-UP
+G0 X0 Y8 ; goes to defined start x & y
+G0 Z0 H2 ; goes to defined start z
+
+G4 P0.000000 ; wait P[ms] between shapes
+M722 S10000 E99999 P6000 I0 T12 ; prime
+G92 E0 ; replace extruder position : E[mm]
+
+; PRINTING : EXTRUSION
+G1 Z0.1 E1 F180
+G1 X0 Y8 E1 F180
+G1 X5 Y8 E1 F180
+G1 X25 Y8 E1 F180
+
+G1 X25 Y11 E1 F180
+
+G1 X5 Y11 E1 F180
+
+G1 X5 Y8.3 E1 F180
+
+G1 X24.7 Y8.3 E1 F180
+
+G1 X24.7 Y10.7 E1 F180
+
+G1 X5.3 Y10.7 E1 F180
+
+G1 X5.3 Y8.6 E1 F180
+
+G1 X24.4 Y8.6 E1 F180
+
+G1 X24.4 Y10.4 E1 F180
+
+G1 X5.6 Y10.4 E1 F180
+
+G1 X5.6 Y8.9 E1 F180
+
+G1 X24.1 Y8.9 E1 F180
+
+G1 X24.1 Y10.1 E1 F180
+
+G1 X5.9 Y10.1 E1 F180
+
+G1 X5.9 Y9.2 E1 F180
+
+G1 X23.8 Y9.2 E1 F180
+
+G1 X23.8 Y9.8 E1 F180
+
+G1 X6.2 Y9.8 E1 F180
+
+G1 X6.2 Y9.5 E1 F180
+
+G1 X23.8 Y9.5 E1 F180
+
+; PRINTING : FINALIZATION
+G0 Z50 ; go up Z[mm]
+
+;SHAPE 4 STARTS HERE
+
+; INITIALIZATION : PRINTING
+M190 S68 ; bed : define temperature
+M109 T12 S80 ; slot 1 : define temperature
+
+M221 P4000 S1.0 T12 Z0.1 W0.335  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], nozzle[mm]
+
+; PRINTING : START-UP
+G0 X0 Y12 ; goes to defined start x & y
+G0 Z0 H2 ; goes to defined start z
+
+G4 P0.000000 ; wait P[ms] between shapes
+M722 S10000 E99999 P6000 I0 T12 ; prime
+G92 E0 ; replace extruder position : E[mm]
+
+; PRINTING : EXTRUSION
+G1 Z0.1 E1 F240
+G1 X0 Y12 E1 F240
+G1 X5 Y12 E1 F240
+G1 X25 Y12 E1 F240
+
+G1 X25 Y15 E1 F240
+
+G1 X5 Y15 E1 F240
+
+G1 X5 Y12.3 E1 F240
+
+G1 X24.7 Y12.3 E1 F240
+
+G1 X24.7 Y14.7 E1 F240
+
+G1 X5.3 Y14.7 E1 F240
+
+G1 X5.3 Y12.6 E1 F240
+
+G1 X24.4 Y12.6 E1 F240
+
+G1 X24.4 Y14.4 E1 F240
+
+G1 X5.6 Y14.4 E1 F240
+
+G1 X5.6 Y12.9 E1 F240
+
+G1 X24.1 Y12.9 E1 F240
+
+G1 X24.1 Y14.1 E1 F240
+
+G1 X5.9 Y14.1 E1 F240
+
+G1 X5.9 Y13.2 E1 F240
+
+G1 X23.8 Y13.2 E1 F240
+
+G1 X23.8 Y13.8 E1 F240
+
+G1 X6.2 Y13.8 E1 F240
+
+G1 X6.2 Y13.5 E1 F240
+
+G1 X23.8 Y13.5 E1 F240
+
+; PRINTING : FINALIZATION
+G0 Z50 ; go up Z[mm]
+
+;SHAPE 5 STARTS HERE
+
+; INITIALIZATION : PRINTING
+M190 S68 ; bed : define temperature
+M109 T12 S80 ; slot 1 : define temperature
+
+M221 P4000 S1.0 T12 Z0.1 W0.335  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], nozzle[mm]
+
+; PRINTING : START-UP
+G0 X0 Y16 ; goes to defined start x & y
+G0 Z0 H2 ; goes to defined start z
+
+G4 P0.000000 ; wait P[ms] between shapes
+M722 S10000 E99999 P6000 I0 T12 ; prime
+G92 E0 ; replace extruder position : E[mm]
+
+; PRINTING : EXTRUSION
+G1 Z0.1 E1 F300
+G1 X0 Y16 E1 F300
+G1 X5 Y16 E1 F300
+G1 X25 Y16 E1 F300
+
+G1 X25 Y19 E1 F300
+
+G1 X5 Y19 E1 F300
+
+G1 X5 Y16.3 E1 F300
+
+G1 X24.7 Y16.3 E1 F300
+
+G1 X24.7 Y18.7 E1 F300
+
+G1 X5.3 Y18.7 E1 F300
+
+G1 X5.3 Y16.6 E1 F300
+
+G1 X24.4 Y16.6 E1 F300
+
+G1 X24.4 Y18.4 E1 F300
+
+G1 X5.6 Y18.4 E1 F300
+
+G1 X5.6 Y16.9 E1 F300
+
+G1 X24.1 Y16.9 E1 F300
+
+G1 X24.1 Y18.1 E1 F300
+
+G1 X5.9 Y18.1 E1 F300
+
+G1 X5.9 Y17.2 E1 F300
+
+G1 X23.8 Y17.2 E1 F300
+
+G1 X23.8 Y17.8 E1 F300
+
+G1 X6.2 Y17.8 E1 F300
+
+G1 X6.2 Y17.5 E1 F300
+
+G1 X23.8 Y17.5 E1 F300
+
+; PRINTING : FINALIZATION
+G0 Z50 ; go up Z[mm]
+
+;SHAPE 6 STARTS HERE
+
+; INITIALIZATION : PRINTING
+M190 S68 ; bed : define temperature
+M109 T12 S80 ; slot 1 : define temperature
+
+M221 P4000 S1.0 T12 Z0.1 W0.335  ; set flow : pulses[p/µl], multiplier[#], tool[#], layer[mm], nozzle[mm]
+
+; PRINTING : START-UP
+G0 X0 Y20 ; goes to defined start x & y
+G0 Z0 H2 ; goes to defined start z
+
+G4 P0.000000 ; wait P[ms] between shapes
+M722 S10000 E99999 P6000 I0 T12 ; prime
+G92 E0 ; replace extruder position : E[mm]
+
+; PRINTING : EXTRUSION
+G1 Z0.1 E1 F360
+G1 X0 Y20 E1 F360
+G1 X5 Y20 E1 F360
+G1 X25 Y20 E1 F360
+
+G1 X25 Y23 E1 F360
+
+G1 X5 Y23 E1 F360
+
+G1 X5 Y20.3 E1 F360
+
+G1 X24.7 Y20.3 E1 F360
+
+G1 X24.7 Y22.7 E1 F360
+
+G1 X5.3 Y22.7 E1 F360
+
+G1 X5.3 Y20.6 E1 F360
+
+G1 X24.4 Y20.6 E1 F360
+
+G1 X24.4 Y22.4 E1 F360
+
+G1 X5.6 Y22.4 E1 F360
+
+G1 X5.6 Y20.9 E1 F360
+
+G1 X24.1 Y20.9 E1 F360
+
+G1 X24.1 Y22.1 E1 F360
+
+G1 X5.9 Y22.1 E1 F360
+
+G1 X5.9 Y21.2 E1 F360
+
+G1 X23.8 Y21.2 E1 F360
+
+G1 X23.8 Y21.8 E1 F360
+
+G1 X6.2 Y21.8 E1 F360
+
+G1 X6.2 Y21.5 E1 F360
+
+G1 X23.8 Y21.5 E1 F360
+
+; PRINTING : FINALIZATION
+G0 Z50 ; go up Z[mm]
+
+G53 ; clear offsets
+M30 ; end of program

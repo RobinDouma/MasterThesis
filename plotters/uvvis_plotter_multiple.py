@@ -19,14 +19,14 @@ class Spectrum:
 # Change the file name and directory here for calculation
 file_extension = 'csv'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis\\' \
-           'Perkin Elmer\\210421 CLCEA2.1\\210726 210709 CLCEA2 lines free - Reflection at RT - normalized glassawd\\'
+           'Perkin Elmer\\210615 LCEAj 210421 CLCEA2.2 bilayer\\Scan R UV - Lambda 750 vrijdag 30 juli 2021\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
 spectra = [0] * len(file_names)
 # Writes incomprehensible data into usable classes
 for file_i, file_name in enumerate(file_names):
     x, y = [], []
-    name = file_name[196:-15]
+    name = file_name[190:-15]
     # Extracts the values from the .csv file
     with open(file_name) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')

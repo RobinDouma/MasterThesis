@@ -17,11 +17,11 @@ class Shape:
         self.path2d = []
         self.path3d = []
         if self.type == "Rectangle":  # Generates a dictionary of variables for rectangle type shapes
-            self.var = {'x_length': 20.0, 'y_length': 20.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10,
-                        'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'offset': 5.0, 'speed': [120.0, 360.0, 600.0, 840.0],
-                        'speed_add': [0.0, 0.0, 0.0, 0.0], 'bed_T': 68.0, 'nozzle_T': 81.0, 'nozzle_W': 0.335,
-                        'dz_line': 0.0, 'shape_time_delay': 20.0, 'P_value': [1000.0, 2000.0, 3000.0, 4000.0],
-                        'P_add': [0.0, 0.0, 0.0, 0.0] }
+            self.var = {'x_length': 20.0, 'y_length': 3.0, 'line_spacing': 0.3, 'line_thickness': 0.1, 'lines': 5,
+                        'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'offset': 5.0, 'speed': [120.0, 120.0, 120.0, 120.0],
+                        'speed_add': [0.0, 0.0, 0.0, 0.0], 'bed_T': 68.0, 'nozzle_T': 80.0, 'nozzle_W': 0.335,
+                        'dz_line': 0.0, 'shape_time_delay': 0.0, 'P_value': [4000.0, 4000.0, 4000.0, 4000.0],
+                        'P_add': [0.0, 0.0, 0.0, 0.0]}
         elif self.type == "Circle":  # Generates a dictionary of variables for circular type shapes
             self.var = {'radius': 5.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10, 'x0': 0.0, 'y0': 0.0,
                         'z0': 0.0, 'offset': 5.0, 'speed': 120.0, 'speed_add': 0.0, 'bed_T': 68.0, 'nozzle_T': 81.0,
@@ -36,13 +36,13 @@ class Shape:
 
 
 # Introduction
-st.title("Welcome to the Robin's shape & G-code generator for 3D printing!")
-st.header("First, choose the type of shape you would like to make:")
+st.title("Welcome to Robin's shape & G-code generator for 3D printing!")
 st.subheader("- squares, rectangles, cubes, pyramids, circles, ovals, cylinders & cones -")
 
 # Choose number of shapes & variable generator w.r.t. number of shapes
 shapes_number = st.number_input("How many shapes do you want to make?", int(1))
 file_name = st.text_input("How do you want to name the G-code??", "name.gcode")
+st.header("Choose the type of shape you would like to make:")
 st.text("Note: all values are of the order [mm], [min], [oC] & [-] or any combinations of these!")
 column = st.beta_columns(shapes_number)
 shapes = [0] * shapes_number
