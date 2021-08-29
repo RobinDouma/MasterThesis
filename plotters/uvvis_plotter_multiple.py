@@ -19,14 +19,14 @@ class Spectrum:
 # Change the file name and directory here for calculation
 file_extension = 'csv'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis\\' \
-           'Perkin Elmer\\210615 LCEAj 210421 CLCEA2.2 bilayer\\Scan R UV - Lambda 750 vrijdag 30 juli 2021\\'
+           'Perkin Elmer\\210805 CLCEA2\\\Scan R 210818 oligomer rectangles - PI\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
 spectra = [0] * len(file_names)
 # Writes incomprehensible data into usable classes
 for file_i, file_name in enumerate(file_names):
     x, y = [], []
-    name = file_name[190:-15]
+    name = file_name[178:-15]
     # Extracts the values from the .csv file
     with open(file_name) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
@@ -62,6 +62,8 @@ for spectrum_i, spectrum in enumerate(spectra):
     color = spectrum_i / (len(spectra) - 1)
     plt.plot(spectrum.x, spectrum.y, label=spectrum.id, color=viridis(color))
     plt.xlabel("Angle")
+    #  plt.xlim([350, 820])
+    # plt.ylim([-10, 60])
     plt.ylabel("Reflectance [%]")
     plt.title("Reflectance vs wavelength")
     plt.legend()

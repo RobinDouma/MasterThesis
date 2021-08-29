@@ -17,9 +17,9 @@ class Shape:
         self.path2d = []
         self.path3d = []
         if self.type == "Rectangle":  # Generates a dictionary of variables for rectangle type shapes
-            self.var = {'x_length': 20.0, 'y_length': 3.0, 'line_spacing': 0.3, 'line_thickness': 0.1, 'lines': 5,
-                        'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'offset': 5.0, 'speed': [120.0, 120.0, 120.0, 120.0],
-                        'speed_add': [0.0, 0.0, 0.0, 0.0], 'bed_T': 68.0, 'nozzle_T': 80.0, 'nozzle_W': 0.335,
+            self.var = {'x_length': 20.0, 'y_length': 4.0, 'line_spacing': 0.25, 'line_thickness': 0.1, 'lines': 8,
+                        'x0': 0.0, 'y0': 0.0, 'z0': 0.0, 'offset': 5.0, 'speed': [360.0, 360.0, 360.0, 360.0],
+                        'speed_add': [0.0, 0.0, 0.0, 0.0], 'bed_T': 56.0, 'nozzle_T': 72.0, 'nozzle_W': 0.335,
                         'dz_line': 0.0, 'shape_time_delay': 0.0, 'P_value': [4000.0, 4000.0, 4000.0, 4000.0],
                         'P_add': [0.0, 0.0, 0.0, 0.0]}
         elif self.type == "Circle":  # Generates a dictionary of variables for circular type shapes
