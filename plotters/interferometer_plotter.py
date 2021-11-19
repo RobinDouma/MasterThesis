@@ -4,9 +4,9 @@ import numpy as np
 from glob import glob as gb
 
 # Change the file name and directory here for calculation
-file_name = '210730 210727 CLCEA2 r6'
+file_name = '211115 s1 l11'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data' \
-      '\\8. Inferometer\\210727 CLCEA2\\210730 210730 rectangles\\'
+      '\\8. Interferometer\\211101 CLCEA2\\All alignments 4-6-10 thick g-s-p\\'
 x, y, y_diff = [], [], []
 
 # Extracts the values from the .dat file
@@ -36,6 +36,11 @@ plt.plot(x, y)
 plt.xlabel("x [μm]")
 plt.ylabel("Line height [μm]")
 plt.title("Profile of %s.dat" % file_name)
+plt.yticks(np.arange(0, max(y), 5))
+plt.xticks(np.arange(0, 7250, 250), fontsize=5)
+#plt.ylim([0, 65])
+plt.grid()
 # plt.text(x[y_diff_i_max], 10, "Average thickness: " + str(int(height_avg)) + "μm")
 # plt.text(x[y_diff_i_max], 0, "Max thickness: " + str(int(height_max)) + "μm")
 plt.savefig(file_dir + file_name + ".png")
+

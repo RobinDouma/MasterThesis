@@ -8,21 +8,21 @@ import os
 from scipy.interpolate import make_interp_spline, BSpline
 
 
-data_pd = pd.read_excel('C:\\Users\\s152191\\Documents\\master_thesis_git\\report_plots\\ink1_UV.xlsx')
+data_pd = pd.read_excel('C:\\Users\\s152191\\Documents\\master_thesis_git\\report_plots\\ink3_UV.xlsx')
 data = np.array(data_pd)
-x2 = data[:, 0]
-before = data[:, 2]
-after = data[:, 1]
-subtr = data[:, 3]
+x2 = data[:, 2]
+before = data[:, 4]
+after = data[:, 6]
+subtr = data[:, 7]
 
-#x = data[0:12, 0]
-#diffx = data[0:12, 1]
+x = data[0:12, 0]
+diffx = data[0:12, 1]
 
 # Make smooth curves
-#xnew = np.linspace(x.min(), x.max(), 200)
-#spl0 = make_interp_spline(x, diffx, k=3)
-#diff = spl0(xnew)
-#diff /= 20
+xnew = np.linspace(x.min(), x.max(), 200)
+spl0 = make_interp_spline(x, diffx, k=3)
+diff = spl0(xnew)
+diff /= 20
 
 viridis = cm.get_cmap('viridis', 3)
 plt.plot(x2, before, label='R', color=viridis(0), linewidth=2)
@@ -39,4 +39,4 @@ plt.yticks(fontsize=14)
 plt.legend(fontsize=14)
 plt.axhline(0, color='grey', linewidth=1, ls='dashed')
 
-plt.savefig("reflectance ink 1 UV present" + ".png")
+plt.savefig("reflectance ink 3 UV present" + ".png")

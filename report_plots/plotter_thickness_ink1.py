@@ -20,7 +20,7 @@ plt.xlim([47.5, 67.5])
 plt.ylim([50, 350])
 
 plt.xlabel("Cure temperature [$^o$C]", fontsize=14)
-plt.ylabel("Thickness [µm]", fontsize=11)
+plt.ylabel("Thickness [µm]", fontsize=14)
 plt.xticks([50, 55, 60, 65], fontsize=14)
 plt.yticks(fontsize=14)
 plt.legend(fontsize=14)

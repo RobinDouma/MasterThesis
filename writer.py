@@ -160,12 +160,12 @@ def gcode_writer_more(path, var, shape_num, type):
                 "nozzle[mm]\n\n" % (shape_num, var['bed_T'], var['nozzle_T'], var['P_value'],
                                     var['line_thickness'], var['nozzle_W']))  # initialization printing
     f.write("; PRINTING : START-UP\n"
+            "G4 P%f ; wait P[ms] between shapes\n"
             "G0 X%g Y%g ; goes to defined start x & y\n"
             "G0 Z0 H2 ; goes to defined start z\n\n"
-            "G4 P%f ; wait P[ms] between shapes\n"
             "M722 S10000 E99999 P6000 I0 T12 ; prime\n"
-            "G92 E0 ; replace extruder position : E[mm]\n\n" % (var['x0'], var['y0'], float((var['shape_time_delay'] *
-                                                                                             60000))))  # printing start
+            "G92 E0 ; replace extruder position : E[mm]\n\n" % (float((var['shape_time_delay'] * 60000)), var['x0'],
+                                                                var['y0']))  # printing start
     line_thickness = var['line_thickness']
     if type == 'Rectangle':
         f.write("; PRINTING : EXTRUSION\n"

@@ -5,8 +5,8 @@ import numpy as np
 # Change the file name and directory here for calculation
 file_name = '210518 210421 CLCEA2.1 g2 l1 again.Sample.Raw'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis PE\\' \
-           '210421 CLCEA2.1\\210521 210520 CLCEA2.1 lines - Reflection at RT\\'
-cutoff = 600  # nm
+           '211005 CLCEA2\\211010 211008 g1 l1\\'
+#cutoff = 600  # nm
 x, y = [], []
 
 # Extracts the values from the .csv file
