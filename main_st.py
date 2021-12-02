@@ -23,9 +23,9 @@ class Shape:
                         'dz_line': 0.0, 'shape_time_delay': 0.0, 'P_value': [4000.0, 4000.0, 4000.0, 4000.0],
                         'P_add': [0.0, 0.0, 0.0, 0.0]}
         elif self.type == "Circle":  # Generates a dictionary of variables for circular type shapes
-            self.var = {'radius': 5.0, 'line_spacing': 0.2, 'line_thickness': 0.05, 'lines': 10, 'x0': 0.0, 'y0': 0.0,
-                        'z0': 0.0, 'offset': 5.0, 'speed': 120.0, 'speed_add': 0.0, 'bed_T': 68.0, 'nozzle_T': 81.0,
-                        'nozzle_W': 0.335, 'dz_line': 0.0, 'shape_time_delay': 0.0, 'P_value': 3000.0, 'P_add': 8000.0}
+            self.var = {'radius': 10.0, 'line_spacing': 0.25, 'line_thickness': 0.05, 'lines': 20, 'x0': 0.0, 'y0': 0.0,
+                        'z0': 0.0, 'offset': 5.0, 'speed': 60.0, 'speed_add': 0.0, 'bed_T': 44.0, 'nozzle_T': 71.0,
+                        'nozzle_W': 0.335, 'dz_line': 0.0, 'shape_time_delay': 0.0, 'P_value': 4000.0, 'P_add': 0.0}
         elif self.type == "Line":  # Generates a dictionary of variables for rectangle type shapes
             self.var = {'length': 60.00, 'segments': 1, 'line_thickness': 0.050, 'x0': 0.0, 'y0': 0.0, 'z0': 0.0,
                         'offset': 5.0, 'speed': 120.0, 'speed_multiplier': 1.0, 'speed_add': 0.0, 'bed_T': 68.0,

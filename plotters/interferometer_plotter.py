@@ -4,9 +4,9 @@ import numpy as np
 from glob import glob as gb
 
 # Change the file name and directory here for calculation
-file_name = '211115 s1 l11'
+file_name = '211122 d1p'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data' \
-      '\\8. Interferometer\\211101 CLCEA2\\All alignments 4-6-10 thick g-s-p\\'
+      '\\8. Interferometer\\211101 CLCEA2\\211122 device\\'
 x, y, y_diff = [], [], []
 
 # Extracts the values from the .dat file
