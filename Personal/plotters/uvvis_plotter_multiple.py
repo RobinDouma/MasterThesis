@@ -19,14 +19,14 @@ class Spectrum:
 # Change the file name and directory here for calculation
 file_extension = 'csv'
 file_dir = 'C:\\Users\\s152191\\OneDrive - TU Eindhoven\\Master\\0. Afstuderen\\3 - Experimental data\\9. UV-Vis\\' \
-           'Perkin Elmer\\211101 CLCEA2\\\Reflectance 211115 g1-2\\'
+           'Perkin Elmer\\211101 CLCEA2\\Transmittance different alignments\\'
 file_names = glob.glob(file_dir + '*.{}'.format(file_extension))
 cutoff = 600  # nm
 spectra = [0] * len(file_names)
 # Writes incomprehensible data into usable classes
 for file_i, file_name in enumerate(file_names):
     x, y = [], []
-    name = file_name[153:-15]
+    name = file_name[165:-15]
     # Extracts the values from the .csv file
     with open(file_name) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=';')
@@ -55,18 +55,25 @@ for file_i, file_name in enumerate(file_names):
    # spec.y -= base_y
 
 # Plots the profile
-viridis = cm.get_cmap('viridis', len(spectra))
+viridis = cm.get_cmap('viridis', len(spectra) + 1)
+plt.rcParams['font.family'] = 'serif'
+plt.rcParams['font.sans-serif'] = ['CMU Serif']
+label = ["N", "N*", "sN*"]
 for spectrum_i, spectrum in enumerate(spectra):
     #if spectrum_i == (len(spectra) - 1):  # if last spectrum is baseline
       #  break
     color = spectrum_i / (len(spectra))
-    plt.plot(spectrum.x, spectrum.y, label=spectrum.id, color=viridis(color))
-    plt.xlabel("Wavelength [nm]")
-    #plt.xlim([350, 550])
-    #plt.ylim([-5, 5])
-    plt.ylabel("Reflectance [%]")
-    plt.title("Reflectance")
-    plt.legend()
+    plt.plot(spectrum.x, spectrum.y, label=label[spectrum_i], color=viridis(color))
+    plt.xlabel("Wavelength [nm]", fontsize=14)
+    plt.xlim([350, 750])
+    plt.ylim([0, 100])
+    plt.ylabel("Transmittance [%]", fontsize=14)
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=14)
+    #plt.title("Transmittance")
+    #plt.axhline(0, color='grey', linewidth=1, ls='dashed')
+    plt.axvline(535, color='grey', linewidth=1, ls='dashed')
+    plt.legend(fontsize=14, loc='upper left')
 if os.path.exists(file_dir + "plot" + ".png"):  # Deletes file if preexisting
     os.remove(file_dir + "plot" + ".png")
 plt.savefig(file_dir + "plot" + ".png")
